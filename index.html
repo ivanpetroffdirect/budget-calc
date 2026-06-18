@@ -2,11 +2,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Калькулятор недельного бюджета</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <script src="script.js"></script>
+</body>
+</html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <div class="restart-container">
     <header class="calc-header">
@@ -27,7 +29,10 @@
     <div class="restart-box">
         <div class="restart-inputs">
             <div class="form-group">
-                <label>Модель оплаты до изменений <span class="hint-trigger" onclick="toggleHint(this)">?</span></label>
+                <label>
+                    Модель оплаты до изменений
+                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                </label>
                 <select id="oldModelRestart">
                     <option value="clicks">Оплата за клики (CPC)</option>
                     <option value="conversions">Оплата за конверсии (CPA)</option>
@@ -36,7 +41,10 @@
             </div>
 
             <div class="form-group">
-                <label>Модель оплаты после изменений <span class="hint-trigger" onclick="toggleHint(this)">?</span></label>
+                <label>
+                    Модель оплаты после изменений
+                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                </label>
                 <select id="newModelRestart">
                     <option value="clicks">Оплата за клики (CPC)</option>
                     <option value="conversions">Оплата за конверсии (CPA)</option>
@@ -45,7 +53,10 @@
             </div>
 
             <div class="form-group">
-                <label>День недели внесения изменений <span class="hint-trigger" onclick="toggleHint(this)">?</span></label>
+                <label>
+                    День недели внесения изменений
+                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                </label>
                 <select id="restartDay">
                     <option value="1">Понедельник</option>
                     <option value="2">Вторник</option>
@@ -59,39 +70,49 @@
             </div>
 
             <div class="form-group">
-                <label id="dynamicExpensesLabel">Фактические расходы с понедельника до четверга <span class="hint-trigger" onclick="toggleHint(this)">?</span></label>
+                <label id="dynamicExpensesLabel">
+                    Фактические расходы с понедельника до четверга
+                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                </label>
                 <input type="text" id="expensesBeforeRestart" value="15 000" inputmode="numeric">
                 <div class="field-hint">Реальный или планируемый расход текущей кампании на этой неделе до момента нажатия кнопки «Сохранить».</div>
             </div>
 
             <div class="form-group">
-                <label>Старый недельный бюджет <span class="hint-trigger" onclick="toggleHint(this)">?</span></label>
+                <label>
+                    Старый недельный бюджет
+                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                </label>
                 <input type="text" id="oldBudget" value="20 000" inputmode="numeric">
                 <div class="field-hint">Сумма недельного бюджета, которая была выставлена в кампании до правок.</div>
             </div>
 
             <div class="form-group">
-                <label>Новый недельный бюджет <span class="hint-trigger" onclick="toggleHint(this)">?</span></label>
+                <label>
+                    Новый недельный бюджет
+                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                </label>
                 <input type="text" id="newBudget" value="25 000" inputmode="numeric">
                 <div class="field-hint">Желаемая сумма нового недельного лимита, которую вы выставляете при редактировании стратегии.</div>
             </div>
+        </div>
         
         <div class="restart-outputs">
             <div class="restart-output-row">
-                <div><span>Доступно нового бюджета после рестарта (до конца недели): <span class="hint-trigger" onclick="toggleHint(this)">?</span></span>
+                <div>
+                    <span>Доступно нового бюджета после рестарта (до конца недели):
+                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                    </span>
                     <div class="field-hint">Сумма, которую Директ имеет право потратить с момента рестарта до конца текущей недели (до воскресенья 23:59). Яндекс выделяет полные 100% от нового лимита, игнорируя траты первой половины недели.</div>
                 </div>
                 <span id="outNewBudgetRest" class="output-val accent">0 ₽</span>
             </div>
 
-            <div class="inline-footer">
-                <p>Навайбкодил эксперт по платному трафику Никита Кравченко.<br>
-                Подписывайтесь на Telegram-канал Никиты по ссылке: <a href="https://t.me/+vzcK_cp-4BphOTdi" target="_blank">@budni_evangelista</a>.</p>
-            </div>
-        </div>
-         
             <div class="restart-output-row">
-                <div><span>Прогноз бюджета за неделю с учетом факт. расходов и нового бюджета: <span class="hint-trigger" onclick="toggleHint(this)">?</span></span>
+                <div>
+                    <span>Прогноз бюджета за неделю с учетом факт. расходов и нового бюджета:
+                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                    </span>
                     <div class="field-hint">Суммарный лимит, который кампания технически может освоить за текущие 7 дней (Фактический расход до рестарта + 100% нового бюджета).</div>
                 </div>
                 <span id="outTotalWeekForecast" class="output-val success">0 ₽</span>
@@ -102,26 +123,37 @@
             </div>
             
             <div class="restart-output-row">
-                <div><span>Дневной лимит для старого бюджета: <span class="hint-trigger" onclick="toggleHint(this)">?</span></span>
+                <div>
+                    <span>Дневной лимит для старого бюджета:
+                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                    </span>
                     <div class="field-hint">Хвост трат до нажатия кнопки «Сохранить» (35% для CPC, 100% для CPA от старого установленного бюджета).</div>
                 </div>
                 <span id="outDayOldComponent">0 ₽</span>
             </div>
             
             <div class="restart-output-row">
-                <div><span>Дневной лимит для нового бюджета: <span class="hint-trigger" onclick="toggleHint(this)">?</span></span>
+                <div>
+                    <span>Дневной лимит для нового бюджета:
+                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                    </span>
                     <div class="field-hint">Новый суточный овердрафт, открывающийся сразу после рестарта стратегии (35% для CPC, 100% для CPA от нового бюджета).</div>
                 </div>
                 <span id="outDayNewComponent">0 ₽</span>
             </div>
             
             <div class="restart-output-row total-risk-row">
-                <div><span>Максимальный расход в день рестарта: <span class="hint-trigger" onclick="toggleHint(this)">?</span></span>
+                <div>
+                    <span>Максимальный расход в день рестарта:
+                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
+                    </span>
                     <div class="field-hint text-danger">Теоретический сценарий расхода бюджета в день внесения изменений из-за наложения лимитов. Ниже под звёздочкой расписано из чего складывается эта сумма.</div>
                 </div>
                 <span id="outMaxDayRiskCombo">0 ₽</span>
             </div>
-            <p class="alert-text" id="restartNotice">* При изменении бюджета максимальный расход в день составляет 35% от старого и нового бюджетов соответственно.</p>
+            <p class="alert-text" id="restartNotice">
+                * При изменении бюджета максимальный расход в день составляет 35% от старого и нового бюджетов соответственно.
+            </p>
         </div>
     </div>
 
@@ -132,6 +164,3 @@
         </div>
     </div>
 </div>
-<script src="script.js"></script>
-</body>
-</html>
