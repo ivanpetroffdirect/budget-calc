@@ -111,22 +111,20 @@
             </div>
             
             <div class="restart-results-grid">
-                <div class="result-card-box">
-                    <div class="result-card-label">
-                        Лимит бюджета на неделю
-                        <span class="hint-trigger" data-hint="Суммарный лимит, который кампания технически может освоить за текущие 7 дней (Фактический расход до рестарта + 100% нового бюджета).">?</span>
-                    </div>
-                    <div id="outTotalWeekForecast" class="result-card-value success">0 ₽</div>
-                </div>
+    <div class="result-card-box">
+        <div class="result-card-label">
+            Суммарный лимит бюджета на неделю <span class="hint-trigger" data-hint="Суммарный лимит, который кампания технически может освоить за текущие 7 дней (Фактический расход до рестарта + 100% нового бюджета).">?</span>
+        </div>
+        <div id="outTotalWeekForecast" class="result-card-value success">0 ₽</div>
+    </div>
 
-                <div class="result-card-box">
-                    <div class="result-card-label" id="dynamicDayTitle">
-                        Максимальный расход в четверг
-                        <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>
-                    </div>
-                    <div id="outMaxDayRiskCombo" class="result-card-value success">0 ₽</div>
-                </div>
-            </div>
+    <div class="result-card-box">
+        <div class="result-card-label" id="dynamicDayTitle">
+            Максимально возможный расход в четверг <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>
+        </div>
+        <div id="outMaxDayRiskCombo" class="result-card-value success">0 ₽</div>
+    </div>
+</div>
 
             <p class="alert-text" id="restartNotice">
                 * При изменении бюджета максимальный расход в день составляет 35% от старого и нового бюджетов соответственно.
