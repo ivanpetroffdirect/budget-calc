@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const newBudget = parseNumber(newBudgetInput.value);
 
         dynamicExpensesLabel.innerHTML = `Расход с понедельника по ${daysWordMap[dayIdx]} <span class="hint-trigger" data-hint="Реальный или планируемый расход текущей кампании на этой неделе до момента нажатия кнопки «Сохранить».">?</span>`;
-        dynamicDayTitle.innerHTML = `Максимальный расход ${daysTargetMap[dayIdx]} <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>`;
+        dynamicDayTitle.innerHTML = `Максимально возможный расход ${daysTargetMap[dayIdx]} <span class="hint-trigger" data-hint="Не факт, что будет такой расход за один день. Но по логике Яндекс Директа это возможный максимальный расход в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>`;
 
         const oldCoeff = oldModel === 'clicks' ? 0.35 : 1.0;
         const newCoeff = newModel === 'clicks' ? 0.35 : 1.0;
