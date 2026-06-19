@@ -15,15 +15,24 @@
     --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Базовые адаптивные настройки */
 body {
     font-family: var(--font-family);
     background-color: var(--bg-main);
     color: var(--text-color);
     line-height: 1.5;
-    padding: 1rem;
+    padding: 0.5rem; /* Минимальный отступ на мобильных */
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     min-height: 100vh;
+    box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+    body {
+        padding: 1rem; /* Стандартный отступ для планшетов */
+    }
 }
 
 .restart-container {
@@ -32,37 +41,52 @@ body {
     background: var(--bg-card);
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(30, 41, 59, 0.05);
-    padding: 1.5rem;
-    margin: auto;
+    padding: 1.25rem; /* Компактные отступы внутри на мобильных */
+    margin: 0.5rem auto;
     box-sizing: border-box;
 }
 
 @media (min-width: 640px) {
     .restart-container {
-        padding: 2rem;
+        padding: 2rem; /* Комфортные просторные отступы для дескрипторов */
+        margin: auto;
     }
 }
 
 /* --- Дескриптор --- */
 .calc-header h1 {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--primary-color);
     line-height: 1.3;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     text-align: center;
+}
+
+@media (min-width: 480px) {
+    .calc-header h1 {
+        font-size: 1.4rem;
+    }
 }
 
 @media (min-width: 640px) {
     .calc-header h1 {
         font-size: 1.6rem;
+        margin-bottom: 1.25rem;
     }
 }
 
 .calc-descriptor {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-color);
-    line-height: 1.6;
+    line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+    .calc-descriptor {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
 }
 
 .calc-descriptor p {
@@ -70,8 +94,14 @@ body {
 }
 
 .calc-descriptor ul {
-    margin-left: 1.5rem;
+    margin-left: 1.25rem;
     margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .calc-descriptor ul {
+        margin-left: 1.5rem;
+    }
 }
 
 .calc-descriptor li {
@@ -100,33 +130,47 @@ body {
 }
 
 .main-change-type-group {
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
     width: 100%;
     box-sizing: border-box;
 }
 
+@media (min-width: 640px) {
+    .main-change-type-group {
+        margin-top: 1.75rem;
+    }
+}
+
 .restart-inputs-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    margin-top: 1.25rem;
-    margin-bottom: 2rem;
+    grid-template-columns: 1fr; /* На мобильных все поля идут в одну колонку */
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
     width: 100%;
 }
 
 @media (min-width: 640px) {
     .restart-inputs-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr; /* На дескриптах выстраиваем в 2 колонки */
         gap: 2rem;
+        margin-top: 1.25rem;
+        margin-bottom: 2rem;
     }
 }
 
 .input-column {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
     width: 100%;
     box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+    .input-column {
+        gap: 1.25rem;
+    }
 }
 
 .form-group {
@@ -137,25 +181,33 @@ body {
 }
 
 .form-group label {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--primary-color);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     display: inline-flex;
     align-items: center;
     width: 100%;
-    min-height: 24px;
+    min-height: 20px;
     box-sizing: border-box;
     transition: color 0.2s;
+}
+
+@media (min-width: 640px) {
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        min-height: 24px;
+    }
 }
 
 .form-group input,
 .form-group select {
     width: 100% !important;
-    height: 46px;
-    padding: 0.75rem 1rem;
+    height: 42px; /* Чуть компактнее высота элементов на смартфонах */
+    padding: 0.6rem 0.8rem;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--primary-color);
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -167,12 +219,29 @@ body {
     -webkit-appearance: none;
 }
 
+@media (min-width: 640px) {
+    .form-group input,
+    .form-group select {
+        height: 46px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+}
+
 .form-group select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1.25rem;
-    padding-right: 2.5rem;
+    background-position: right 0.8rem center;
+    background-size: 1.1rem;
+    padding-right: 2.25rem;
+}
+
+@media (min-width: 640px) {
+    .form-group select {
+        background-position: right 1rem center;
+        background-size: 1.25rem;
+        padding-right: 2.5rem;
+    }
 }
 
 .form-group input:focus,
@@ -227,18 +296,26 @@ body {
 /* --- Сетка карточек результатов --- */
 .restart-results-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-    margin-top: 2rem;
+    grid-template-columns: 1fr; /* Карточки вывода на смартфонах идут друг под другом */
+    gap: 1rem;
+    margin-top: 1.5rem;
     border-top: 2px dashed var(--border-color);
-    padding-top: 2rem;
+    padding-top: 1.5rem;
     width: 100%;
+}
+
+@media (min-width: 580px) {
+    .restart-results-grid {
+        grid-template-columns: 1fr 1fr; /* С планшетов выстраиваются горизонтально */
+        gap: 1.25rem;
+    }
 }
 
 @media (min-width: 640px) {
     .restart-results-grid {
-        grid-template-columns: 1fr 1fr;
         gap: 1.5rem;
+        margin-top: 2rem;
+        padding-top: 2rem;
     }
 }
 
@@ -246,18 +323,25 @@ body {
     background-color: #f8fafc;
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1.25rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 140px;
+    min-height: 110px;
     box-sizing: border-box;
 }
 
+@media (min-width: 640px) {
+    .result-card-box {
+        padding: 1.5rem;
+        min-height: 140px;
+    }
+}
+
 .result-card-label {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--primary-color);
     display: inline-flex;
@@ -265,16 +349,29 @@ body {
     justify-content: center;
 }
 
+@media (min-width: 640px) {
+    .result-card-label {
+        font-size: 0.95rem;
+    }
+}
+
 .result-card-value {
-    font-size: 2rem;
+    font-size: 1.65rem; /* Аккуратный размер цифр для узких экранов */
     font-weight: 800;
-    margin-top: 0.75rem;
+    margin-top: 0.5rem;
     letter-spacing: -0.02em;
+}
+
+@media (min-width: 400px) {
+    .result-card-value {
+        font-size: 1.85rem;
+    }
 }
 
 @media (min-width: 640px) {
     .result-card-value {
         font-size: 2.25rem;
+        margin-top: 0.75rem;
     }
 }
 
@@ -282,21 +379,43 @@ body {
 .result-card-value.danger { color: var(--danger-color); }
 
 .alert-text {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     line-height: 1.4;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     text-align: center;
+}
+
+@media (min-width: 640px) {
+    .alert-text {
+        font-size: 0.8rem;
+        margin-top: 1.5rem;
+    }
 }
 
 /* --- Подпись автора --- */
 .author-credits {
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
     border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
     line-height: 1.5;
+    text-align: center; /* Центрируем подпись на мобильных */
+}
+
+@media (min-width: 480px) {
+    .author-credits {
+        text-align: left; /* Возвращаем выравнивание по левому краю для больших экранов */
+    }
+}
+
+@media (min-width: 640px) {
+    .author-credits {
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        font-size: 0.9rem;
+    }
 }
 
 .author-credits a {
@@ -309,7 +428,7 @@ body {
     text-decoration: underline;
 }
 
-/* --- Поп-ап --- */
+/* --- Адаптивный Поп-ап --- */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -332,7 +451,7 @@ body {
 
 .popup-content {
     background: var(--bg-card);
-    padding: 1.75rem;
+    padding: 1.5rem;
     border-radius: 12px;
     max-width: 420px;
     width: 100%;
@@ -342,6 +461,12 @@ body {
     box-sizing: border-box;
 }
 
+@media (min-width: 640px) {
+    .popup-content {
+        padding: 1.75rem;
+    }
+}
+
 @keyframes popupScale {
     from { transform: scale(0.95); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
@@ -349,12 +474,20 @@ body {
 
 .popup-close {
     position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-    font-size: 1.5rem;
+    top: 0.5rem;
+    right: 0.75rem;
+    font-size: 1.4rem;
     cursor: pointer;
     color: var(--text-muted);
     line-height: 1;
+}
+
+@media (min-width: 640px) {
+    .popup-close {
+        top: 0.75rem;
+        right: 1rem;
+        font-size: 1.5rem;
+    }
 }
 
 .popup-close:hover {
@@ -362,8 +495,14 @@ body {
 }
 
 #popupText {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-color);
     line-height: 1.5;
     text-align: left;
+}
+
+@media (min-width: 640px) {
+    #popupText {
+        font-size: 0.95rem;
+    }
 }
