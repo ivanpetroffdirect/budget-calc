@@ -1,127 +1,169 @@
-const daysTranslation = {
-    1: ['понедельника', 'понедельник'],
-    2: ['вторника', 'вторник'],
-    3: ['среды', 'среду'],
-    4: ['четверга', 'четверг'],
-    5: ['пятницы', 'пятницу'],
-    6: ['субботы', 'субботу'],
-    7: ['воскресенья', 'воскресенье']
-};
+document.addEventListener('DOMContentLoaded', () => {
+    // Основной селект типа изменений
+    const changeTypeSelect = document.getElementById('changeTypeSelect');
 
-function init() {
-    setupListeners();
-    updateDynamicLabel();
-    calculateRestartBlock();
-}
+    // Элементы ввода данных
+    const oldModelSelect = document.getElementById('oldModelRestart');
+    const newModelSelect = document.getElementById('newModelRestart');
+    const restartDaySelect = document.getElementById('restartDay');
+    const expensesInput = document.getElementById('expensesBeforeRestart');
+    const oldBudgetInput = document.getElementById('oldBudget');
+    const newBudgetInput = document.getElementById('newBudget');
 
-// Вспомогательная функция форматирования (добавляет пробелы между тысячами)
-function formatNumberWithSpaces(value) {
-    const cleanValue = value.replace(/[^0-9]/g, '');
-    return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
+    // Контейнеры полей для управления disabled-стилями
+    const newModelGroup = document.getElementById('newModelGroup');
+    const newBudgetGroup = document.getElementById('newBudgetGroup');
 
-// Вспомогательная функция очистки (удаляет пробелы для математических вычислений)
-function parseNumber(value) {
-    const cleanValue = value.replace(/\s/g, '');
-    return parseFloat(cleanValue) || 0;
-}
+    // Текстовые динамические метки
+    const dynamicExpensesLabel = document.getElementById('dynamicExpensesLabel');
+    const dynamicDayTitle = document.getElementById('dynamicDayTitle');
+    const restartNotice = document.getElementById('restartNotice');
 
-function setupListeners() {
-    document.getElementById('oldModelRestart').addEventListener('change', calculateRestartBlock);
-    document.getElementById('newModelRestart').addEventListener('change', calculateRestartBlock);
-    
-    const numericInputs = ['expensesBeforeRestart', 'oldBudget', 'newBudget'];
-    numericInputs.forEach(id => {
-        const input = document.getElementById(id);
-        input.addEventListener('input', (e) => {
-            const cursorPosition = e.target.selectionStart;
-            const oldLength = e.target.value.length;
-            
-            e.target.value = formatNumberWithSpaces(e.target.value);
-            
-            const newLength = e.target.value.length;
-            e.target.setSelectionRange(cursorPosition + (newLength - oldLength), cursorPosition + (newLength - oldLength));
-            
-            calculateRestartBlock();
+    // Элементы вывода результатов
+    const outTotalWeekForecast = document.getElementById('outTotalWeekForecast');
+    const outMaxDayRiskCombo = document.getElementById('outMaxDayRiskCombo');
+
+    // Элементы поп-апа
+    const popupOverlay = document.getElementById('hintPopup');
+    const popupText = document.getElementById('popupText');
+    const popupClose = document.querySelector('.popup-close');
+
+    const daysWordMap = {
+        1: 'понедельник', 2: 'вторник', 3: 'среду', 4: 'четверг',
+        5: 'пятницу', 6: 'субботу', 7: 'воскресенье'
+    };
+
+    const daysTargetMap = {
+        1: 'в понедельник', 2: 'во вторник', 3: 'в среду', 4: 'в четверг',
+        5: 'в пятницу', 6: 'в субботу', 7: 'в воскресенье'
+    };
+
+    // --- Валидация и маски числового ввода ---
+    function formatNumber(val) {
+        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
+    function parseNumber(str) {
+        return parseFloat(str.replace(/\s+/g, '')) || 0;
+    }
+
+    function applyMask(input) {
+        let value = input.value.replace(/\D/g, '');
+        if (value === '') value = '0';
+        input.value = formatNumber(parseInt(value, 10));
+    }
+
+    [expensesInput, oldBudgetInput, newBudgetInput].forEach(input => {
+        input.addEventListener('input', () => {
+            applyMask(input);
+            calculateRestart();
+        });
+        input.addEventListener('blur', () => {
+            if (!input.value.trim()) input.value = '0';
         });
     });
-    
-    document.getElementById('restartDay').addEventListener('change', () => {
-        updateDynamicLabel();
-        calculateRestartBlock();
+
+    // Синхронизация при изменении исходных полей, от которых зависят заблокированные
+    oldModelSelect.addEventListener('change', () => {
+        if (newModelSelect.disabled) {
+            newModelSelect.value = oldModelSelect.value;
+        }
+        calculateRestart();
     });
 
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            const popup = document.getElementById('hintPopup');
-            if (popup.classList.contains('active')) {
-                popup.classList.remove('active');
+    oldBudgetInput.addEventListener('input', () => {
+        if (newBudgetInput.disabled) {
+            newBudgetInput.value = oldBudgetInput.value;
+        }
+    });
+
+    // --- Интерактивная логика блокировок на основе типа изменений ---
+    function handleInputChangeRestrictions() {
+        const type = changeTypeSelect.value;
+
+        if (type === 'budget') {
+            newModelSelect.disabled = true;
+            newModelGroup.classList.add('disabled-state');
+            newModelSelect.value = oldModelSelect.value;
+
+            newBudgetInput.disabled = false;
+            newBudgetGroup.classList.remove('disabled-state');
+        } 
+        else if (type === 'model') {
+            newBudgetInput.disabled = true;
+            newBudgetGroup.classList.add('disabled-state');
+            newBudgetInput.value = oldBudgetInput.value;
+
+            newModelSelect.disabled = false;
+            newModelGroup.classList.remove('disabled-state');
+        } 
+        else {
+            newModelSelect.disabled = false;
+            newModelGroup.classList.remove('disabled-state');
+            newBudgetInput.disabled = false;
+            newBudgetGroup.classList.remove('disabled-state');
+        }
+
+        calculateRestart();
+    }
+
+    changeTypeSelect.addEventListener('change', handleInputChangeRestrictions);
+
+    // --- Логика модальных окон (Подсказки) ---
+    document.body.addEventListener('click', (e) => {
+        if (e.target.classList.contains('hint-trigger')) {
+            if (e.target.closest('.disabled-state')) return;
+            
+            const text = e.target.getAttribute('data-hint');
+            if (text) {
+                popupText.textContent = text;
+                popupOverlay.classList.add('active');
             }
         }
     });
-}
 
-function toggleHint(triggerElement) {
-    const parent = triggerElement.closest('.form-group') || triggerElement.closest('div');
-    const hint = parent.querySelector('.field-hint');
-    
-    if (hint) {
-        const popup = document.getElementById('hintPopup');
-        const popupText = document.getElementById('popupText');
-        
-        popupText.innerText = hint.innerText;
-        popup.classList.add('active');
+    popupClose.addEventListener('click', () => popupOverlay.classList.remove('active'));
+    popupOverlay.addEventListener('click', (e) => {
+        if (e.target === popupOverlay) popupOverlay.classList.remove('active');
+    });
+
+    // --- Главная функция расчета ---
+    function calculateRestart() {
+        const oldModel = oldModelSelect.value;
+        const newModel = newModelSelect.value;
+        const dayIdx = parseInt(restartDaySelect.value, 10);
+
+        const expensesBefore = parseNumber(expensesInput.value);
+        const oldBudget = parseNumber(oldBudgetInput.value);
+        const newBudget = parseNumber(newBudgetInput.value);
+
+        // 1. Динамическое обновление текстов лейблов в зависимости от дня недели
+        dynamicExpensesLabel.innerHTML = `Расход с понедельника по ${daysWordMap[dayIdx]} <span class="hint-trigger" data-hint="Реальный или планируемый расход текущей кампании на этой неделе до момента нажатия кнопки «Сохранить».">?</span>`;
+        dynamicDayTitle.innerHTML = `Максимальный расход ${daysTargetMap[dayIdx]} <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>`;
+
+        // 2. Расчет коэффициентов овердрафта (CPC = 35%, CPA = 100%)
+        const oldCoeff = oldModel === 'clicks' ? 0.35 : 1.0;
+        const newCoeff = newModel === 'clicks' ? 0.35 : 1.0;
+
+        // Корректировка текста дисклеймера снизу
+        restartNotice.textContent = `* При текущем выборе максимальный расход в день рестарта складывается из суточных овердрафтов: ${(oldCoeff*100)}% от старого бюджета + ${(newCoeff*100)}% от нового бюджета.`;
+
+        // 3. Расчет метрики: Лимит бюджета на неделю
+        const totalWeekForecast = expensesBefore + newBudget;
+
+        // 4. Расчет метрики: Максимальный расход в день рестарта (наложение лимитов)
+        const dayOldComponent = oldBudget * oldCoeff;
+        const dayNewComponent = newBudget * newCoeff;
+        const maxDayRiskCombo = dayOldComponent + dayNewComponent;
+
+        // 5. Вывод результатов
+        outTotalWeekForecast.textContent = `${formatNumber(Math.round(totalWeekForecast))} ₽`;
+        outMaxDayRiskCombo.textContent = `${formatNumber(Math.round(maxDayRiskCombo))} ₽`;
     }
-}
 
-function closeHintPopup(event) {
-    const popup = document.getElementById('hintPopup');
-    popup.classList.remove('active');
-}
+    [oldModelSelect, newModelSelect, restartDaySelect].forEach(select => {
+        select.addEventListener('change', calculateRestart);
+    });
 
-function updateDynamicLabel() {
-    const dayIndex = document.getElementById('restartDay').value;
-    const dayData = daysTranslation[dayIndex];
-    
-    const inputLabel = document.getElementById('dynamicExpensesLabel');
-    inputLabel.innerHTML = `Фактические расходы с понедельника до ${dayData[0]} <span class="hint-trigger" onclick="toggleHint(this)">?</span>`;
-    
-    const outputTitle = document.getElementById('dynamicDayTitle');
-    outputTitle.innerText = `Максимально возможный расход в ${dayData[1]} (день рестарта):`;
-}
-
-function calculateRestartBlock() {
-    const oldBudget = parseNumber(document.getElementById('oldBudget').value);
-    const newBudget = parseNumber(document.getElementById('newBudget').value);
-    const expensesBeforeRestart = parseNumber(document.getElementById('expensesBeforeRestart').value);
-    
-    const oldModel = document.getElementById('oldModelRestart').value;
-    const newModel = document.getElementById('newModelRestart').value;
-
-    const oldDayFactor = (oldModel === 'clicks') ? 0.35 : 1.0;
-    const newDayFactor = (newModel === 'clicks') ? 0.35 : 1.0;
-
-    const dayOldComponent = Math.round(oldBudget * oldDayFactor);
-    const dayNewComponent = Math.round(newBudget * newDayFactor);
-    const maxDayRiskCombo = dayOldComponent + dayNewComponent;
-
-    const budgetAfterRestart = newBudget;
-    const totalWeekForecast = expensesBeforeRestart + budgetAfterRestart;
-
-    document.getElementById('outNewBudgetRest').innerText = `${budgetAfterRestart.toLocaleString()} ₽`;
-    document.getElementById('outTotalWeekForecast').innerText = `${totalWeekForecast.toLocaleString()} ₽`;
-    document.getElementById('outDayOldComponent').innerText = `${dayOldComponent.toLocaleString()} ₽`;
-    document.getElementById('outDayNewComponent').innerText = `${dayNewComponent.toLocaleString()} ₽`;
-    document.getElementById('outMaxDayRiskCombo').innerText = `${maxDayRiskCombo.toLocaleString()} ₽`;
-
-    // Заменена фраза «пиковые суточные лимиты» на «максимальный расход в день»
-    let noticeText = `* `;
-    if (oldModel !== newModel) {
-        noticeText += `В день изменения настроек происходит смена модели оплаты, максимальный расход в день рассчитывается как ${oldDayFactor*100}% от старого бюджета + ${newDayFactor*100}% от нового бюджета.`;
-    } else {
-        noticeText += `При изменении бюджета максимальный расход в день составляет ${oldDayFactor*100}% от старого и нового бюджетов соответственно.`;
-    }
-    document.getElementById('restartNotice').innerText = noticeText;
-}
-
-window.onload = init;
+    handleInputChangeRestrictions();
+});
