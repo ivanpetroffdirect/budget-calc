@@ -2,173 +2,151 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Калькулятор недельного бюджета в Яндекс Директе</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="restart-container">
-    <header class="calc-header">
-        <h1>Калькулятор недельного бюджета в Яндекс Директе</h1>
-        
-        <div class="calc-descriptor">
-            <p>Недельный бюджет в Яндекс Директе рассчитывается за календарную неделю с понедельника по воскресенье. Некоторые изменения в настройках кампании перезапускают расход недельного бюджета (рестарт). Если не знать принцип работы алгоритма и изменить недельный бюджет в середине недели, можно столкнуться с непредвиденным расходом как в день внесения изменений, так и суммарно за неделю.</p>
-            <p style="margin-top: 10px;">Рестарт недельного бюджета возможен в следующих случаях:</p>
-            <ul>
-                <li>изменение недельного бюджета;</li>
-                <li>изменение модели оплаты;</li>
-                <li>перенос даты начала кампании в будущее, в том числе когда после окончания в кампании изменили дату окончания на более позднюю и она была запущена заново.</li>
-            </ul>
-            <p class="descriptor-note">Другие изменения на перезапуск трат не влияют. Чтобы избежать перерасхода, изменяйте бюджет в начале календарной недели. Подробнее в <a href="https://yandex.ru/support/direct/ru/strategies/week-budget#kak-rabotaet" target="_blank" style="color: var(--accent-color); text-decoration: none; border-bottom: 1px solid rgba(52, 152, 219, 0.4); transition: border-color 0.2s;">Справке</a>.</p>
-        </div>
-    </header>
-
-    <div class="restart-box">
-        <div class="restart-inputs">
-            <div class="form-group">
-                <label>
-                    Модель оплаты до изменений
-                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                </label>
-                <select id="oldModelRestart">
-                    <option value="clicks">Оплата за клики (CPC)</option>
-                    <option value="conversions">Оплата за конверсии (CPA)</option>
-                </select>
-                <div class="field-hint">Модель оплаты, по которой кампания работает сейчас.</div>
+    <div class="restart-container">
+        <header class="calc-header">
+            <h1>Калькулятор недельного бюджета в Яндекс Директе</h1>
+            
+            <div class="calc-descriptor">
+                <p>Недельный бюджет в Яндекс Директе рассчитывается за календарную неделю с понедельника по воскресенье. Некоторые изменения в настройках кампании перезапускают расход недельного бюджета (рестарт). Если не знать принцип работы алгоритма и изменить недельный бюджет в середине недели, можно столкнуться с непредвиденным расходом как в день внесения изменений, так и суммарно за неделю.</p>
+                <p style="margin-top: 10px;">Рестарт недельного бюджета возможен в следующих случаях:</p>
+                <ul>
+                    <li>изменение недельного бюджета;</li>
+                    <li>изменение модели оплаты;</li>
+                    <li>перенос даты начала кампании в будущее, в том числе когда после окончания в кампании изменили дату окончания на более позднюю и она была запущена заново.</li>
+                </ul>
+                <p class="descriptor-note">Другие изменения на перезапуск трат не влияют. Чтобы избежать перерасхода, изменяйте бюджет в начале календарной недели. Подробнее в <a href="https://yandex.ru/support/direct/ru/strategies/week-budget#kak-rabotaet" target="_blank">Справке</a>.</p>
             </div>
+        </header>
 
-            <div class="form-group">
-                <label>
-                    Модель оплаты после изменений
-                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                </label>
-                <select id="newModelRestart">
-                    <option value="clicks">Оплата за клики (CPC)</option>
-                    <option value="conversions">Оплата за конверсии (CPA)</option>
-                </select>
-                <div class="field-hint">Новая модель, которая активируется сразу после сохранения настроек кампании.</div>
-            </div>
-
-            <div class="form-group">
-                <label>
-                    День недели внесения изменений
-                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                </label>
-                <select id="restartDay">
-                    <option value="1">Понедельник</option>
-                    <option value="2">Вторник</option>
-                    <option value="3">Среда</option>
-                    <option value="4" selected>Четверг</option>
-                    <option value="5">Пятница</option>
-                    <option value="6">Суббота</option>
-                    <option value="7">Воскресенье</option>
-                </select>
-                <div class="field-hint">Определяет календарную границу сброса лимитов и пересчета суточного овердрафта в Яндекс Директе.</div>
-            </div>
-
-            <div class="form-group">
-                <label id="dynamicExpensesLabel">
-                    Фактические расходы с понедельника до четверга
-                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                </label>
-                <input type="text" id="expensesBeforeRestart" value="15 000" inputmode="numeric">
-                <div class="field-hint">Реальный или планируемый расход текущей кампании на этой неделе до момента нажатия кнопки «Сохранить».</div>
-            </div>
-
-            <div class="form-group">
-                <label>
-                    Старый недельный бюджет
-                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                </label>
-                <input type="text" id="oldBudget" value="20 000" inputmode="numeric">
-                <div class="field-hint">Сумма недельного бюджета, которая была выставлена в кампании до правок.</div>
-            </div>
-
-            <div class="form-group">
-                <label>
-                    Новый недельный бюджет
-                    <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                </label>
-                <input type="text" id="newBudget" value="25 000" inputmode="numeric">
-                <div class="field-hint">Желаемая сумма нового недельного лимита, которую вы выставляете при редактировании стратегии.</div>
-            </div>
-        </div>
-        
-        <div class="restart-outputs">
-            <div class="restart-output-row">
-                <div>
-                    <span>Доступно нового бюджета после рестарта (до конца недели):
-                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                    </span>
-                    <div class="field-hint">Сумма, которую Директ имеет право потратить с момента рестарта до конца текущей недели (до воскресенья 23:59). Яндекс выделяет полные 100% от нового лимита, игнорируя траты первой половины недели.</div>
+        <div class="restart-box">
+            
+            <div class="main-change-type-group">
+                <div class="form-group">
+                    <label>
+                        Какое изменение планируете внести?
+                        <span class="hint-trigger" data-hint="Выберите характер планируемых правок в кампании. Это автоматически заблокирует параметры, которые не должны меняться при данном сценарии.">?</span>
+                    </label>
+                    <select id="changeTypeSelect">
+                        <option value="budget">Изменение недельного бюджета</option>
+                        <option value="model">Изменение модели оплаты</option>
+                        <option value="both" selected>Изменение недельного бюджета и модели оплаты</option>
+                    </select>
                 </div>
-                <span id="outNewBudgetRest" class="output-val accent">0 ₽</span>
             </div>
 
-            <div class="restart-output-row">
-                <div>
-                    <span>Прогноз бюджета за неделю с учетом факт. расходов и нового бюджета:
-                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                    </span>
-                    <div class="field-hint">Суммарный лимит, который кампания технически может освоить за текущие 7 дней (Фактический расход до рестарта + 100% нового бюджета).</div>
+            <div class="restart-inputs-grid">
+                
+                <div class="input-column">
+                    <div class="form-group">
+                        <label>
+                            Модель оплаты до изменений
+                            <span class="hint-trigger" data-hint="Модель оплаты, по которой кампания работает сейчас.">?</span>
+                        </label>
+                        <select id="oldModelRestart">
+                            <option value="clicks">Оплата за клики (CPC)</option>
+                            <option value="conversions">Оплата за конверсии (CPA)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="newModelGroup">
+                        <label>
+                            Модель оплаты после изменений
+                            <span class="hint-trigger" data-hint="Новая модель, которая активируется сразу после сохранения настроек кампании.">?</span>
+                        </label>
+                        <select id="newModelRestart">
+                            <option value="clicks">Оплата за клики (CPC)</option>
+                            <option value="conversions">Оплата за конверсии (CPA)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            День недели внесения изменений
+                            <span class="hint-trigger" data-hint="Определяет календарную границу сброса лимитов и пересчета суточного овердрафта в Яндекс Директе.">?</span>
+                        </label>
+                        <select id="restartDay">
+                            <option value="1">Понедельник</option>
+                            <option value="2">Вторник</option>
+                            <option value="3">Среда</option>
+                            <option value="4" selected>Четверг</option>
+                            <option value="5">Пятница</option>
+                            <option value="6">Суббота</option>
+                            <option value="7">Воскресенье</option>
+                        </select>
+                    </div>
                 </div>
-                <span id="outTotalWeekForecast" class="output-val success">0 ₽</span>
+                
+                <div class="input-column">
+                    <div class="form-group">
+                        <label id="dynamicExpensesLabel">
+                            Расход с понедельника по четверг
+                            <span class="hint-trigger" data-hint="Реальный или планируемый расход текущей кампании на этой неделе до момента нажатия кнопки «Сохранить».">?</span>
+                        </label>
+                        <input type="text" id="expensesBeforeRestart" value="15 000" inputmode="numeric">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Старый недельный бюджет
+                            <span class="hint-trigger" data-hint="Сумма недельного бюджета, которая была выставлена в кампании до правок.">?</span>
+                        </label>
+                        <input type="text" id="oldBudget" value="20 000" inputmode="numeric">
+                    </div>
+
+                    <div class="form-group" id="newBudgetGroup">
+                        <label>
+                            Новый недельный бюджет
+                            <span class="hint-trigger" data-hint="Желаемая сумма нового недельного лимита, которую вы выставляете при редактировании стратегии.">?</span>
+                        </label>
+                        <input type="text" id="newBudget" value="25 000" inputmode="numeric">
+                    </div>
+                </div>
+
             </div>
             
-            <div class="restart-output-row sep">
-                <span><strong id="dynamicDayTitle">Максимально возможный расход в четверг (день рестарта):</strong></span>
-            </div>
-            
-            <div class="restart-output-row">
-                <div>
-                    <span>Дневной лимит для старого бюджета:
-                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                    </span>
-                    <div class="field-hint">Хвост трат до нажатия кнопки «Сохранить» (35% для CPC, 100% для CPA от старого установленного бюджета).</div>
+            <div class="restart-results-grid">
+                <div class="result-card-box">
+                    <div class="result-card-label">
+                        Лимит бюджета на неделю
+                        <span class="hint-trigger" data-hint="Суммарный лимит, который кампания технически может освоить за текущие 7 дней (Фактический расход до рестарта + 100% нового бюджета).">?</span>
+                    </div>
+                    <div id="outTotalWeekForecast" class="result-card-value success">0 ₽</div>
                 </div>
-                <span id="outDayOldComponent">0 ₽</span>
-            </div>
-            
-            <div class="restart-output-row">
-                <div>
-                    <span>Дневной лимит для нового бюджета:
-                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                    </span>
-                    <div class="field-hint">Новый суточный овердрафт, открывающийся сразу после рестарта стратегии (35% для CPC, 100% для CPA от нового бюджета).</div>
+
+                <div class="result-card-box">
+                    <div class="result-card-label" id="dynamicDayTitle">
+                        Максимальный расход в четверг
+                        <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>
+                    </div>
+                    <div id="outMaxDayRiskCombo" class="result-card-value success">0 ₽</div>
                 </div>
-                <span id="outDayNewComponent">0 ₽</span>
             </div>
-            
-            <div class="restart-output-row total-risk-row">
-                <div>
-                    <span>Максимальный расход в день рестарта:
-                        <span class="hint-trigger" onclick="toggleHint(this)">?</span>
-                    </span>
-                    <div class="field-hint text-danger">Теоретический сценарий расхода бюджета в день внесения изменений из-за наложения лимитов. Ниже под звёздочкой расписано из чего складывается эта сумма.</div>
-                </div>
-                <span id="outMaxDayRiskCombo">0 ₽</span>
-            </div>
+
             <p class="alert-text" id="restartNotice">
                 * При изменении бюджета максимальный расход в день составляет 35% от старого и нового бюджетов соответственно.
             </p>
         </div>
-    </div>
 
-    <footer class="author-credits" style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color, #e2e8f0); font-size: 0.9rem; color: var(--text-muted, #64748b); line-height: 1.5;">
-        Разработал эксперт по интернет-рекламе Никита Кравченко.<br>
-        Больше полезностей в Telegram-канале. Подписывайтесь: 
-        <a href="https://t.me/+vzcK_cp-4BphOTdi" target="_blank" rel="noopener" style="color: var(--accent-color, #3498db); text-decoration: none; font-weight: 600;">@budni_evangelista</a>
-    </footer>
+        <footer class="author-credits">
+            Разработано экспертом по платному трафику Никитой Кравченко.<br>
+            Подписывайтесь на Telegram-канал Никиты по ссылке: 
+            <a href="https://t.me/budni_evangelista" target="_blank" rel="noopener">@budni_evangelista</a>
+        </footer>
 
-    <div id="hintPopup" class="popup-overlay" onclick="closeHintPopup(event)">
-        <div class="popup-content" onclick="event.stopPropagation()">
-            <span class="popup-close" onclick="closeHintPopup(event)">&times;</span>
-            <p id="popupText">Текст подсказки</p>
+        <div id="hintPopup" class="popup-overlay">
+            <div class="popup-content">
+                <span class="popup-close">&times;</span>
+                <p id="popupText">Текст подсказки</p>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
