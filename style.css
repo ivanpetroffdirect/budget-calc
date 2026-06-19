@@ -21,7 +21,7 @@ body {
     background-color: var(--bg-main);
     color: var(--text-color);
     line-height: 1.5;
-    padding: 0.5rem; /* Минимальный отступ на мобильных */
+    padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -31,7 +31,7 @@ body {
 
 @media (min-width: 480px) {
     body {
-        padding: 1rem; /* Стандартный отступ для планшетов */
+        padding: 1rem;
     }
 }
 
@@ -41,14 +41,14 @@ body {
     background: var(--bg-card);
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(30, 41, 59, 0.05);
-    padding: 1.25rem; /* Компактные отступы внутри на мобильных */
+    padding: 1.25rem;
     margin: 0.5rem auto;
     box-sizing: border-box;
 }
 
 @media (min-width: 640px) {
     .restart-container {
-        padding: 2rem; /* Комфортные просторные отступы для дескрипторов */
+        padding: 2rem;
         margin: auto;
     }
 }
@@ -76,6 +76,17 @@ body {
     }
 }
 
+/* Управление переносом строки в h1 для ноутбуков */
+.laptop-break {
+    display: none;
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+    .laptop-break {
+        display: block;
+    }
+}
+
 .calc-descriptor {
     font-size: 0.9rem;
     color: var(--text-color);
@@ -95,14 +106,20 @@ body {
 
 /* Настройки компактного списка */
 .calc-descriptor ul {
-    margin-left: 1.1rem;      /* Уменьшенный отступ слева для маркеров */
-    margin-top: 0.25rem;     /* Прижали список ближе к вводному тексту */
-    margin-bottom: 0.5rem;   /* Уменьшенный отступ снизу */
-    padding-left: 0;         /* Обнуление внутреннего паддинга */
+    margin-left: 1.1rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0;
 }
 
 .calc-descriptor li {
-    margin-bottom: 0.2rem;   /* Плотное расположение строк списка */
+    margin-bottom: 0.2rem;
+}
+
+@media (min-width: 640px) {
+    .calc-descriptor ul {
+        margin-left: 1.1rem;
+    }
 }
 
 .descriptor-note {
@@ -140,7 +157,7 @@ body {
 
 .restart-inputs-grid {
     display: grid;
-    grid-template-columns: 1fr; /* На мобильных все поля идут в одну колонку */
+    grid-template-columns: 1fr;
     gap: 1rem;
     margin-top: 1rem;
     margin-bottom: 1.5rem;
@@ -149,7 +166,7 @@ body {
 
 @media (min-width: 640px) {
     .restart-inputs-grid {
-        grid-template-columns: 1fr 1fr; /* На дескриптах выстраиваем в 2 колонки */
+        grid-template-columns: 1fr 1fr;
         gap: 2rem;
         margin-top: 1.25rem;
         margin-bottom: 2rem;
@@ -201,7 +218,7 @@ body {
 .form-group input,
 .form-group select {
     width: 100% !important;
-    height: 42px; /* Компактная высота элементов на смартфонах */
+    height: 42px;
     padding: 0.6rem 0.8rem;
     font-family: inherit;
     font-size: 0.95rem;
@@ -293,7 +310,7 @@ body {
 /* --- Сетка карточек результатов --- */
 .restart-results-grid {
     display: grid;
-    grid-template-columns: 1fr; /* Карточки вывода на смартфонах идут друг под другом */
+    grid-template-columns: 1fr;
     gap: 1rem;
     margin-top: 1.5rem;
     border-top: 2px dashed var(--border-color);
@@ -303,7 +320,7 @@ body {
 
 @media (min-width: 580px) {
     .restart-results-grid {
-        grid-template-columns: 1fr 1fr; /* С планшетов выстраиваются горизонтально */
+        grid-template-columns: 1fr 1fr;
         gap: 1.25rem;
     }
 }
@@ -353,7 +370,7 @@ body {
 }
 
 .result-card-value {
-    font-size: 1.65rem; /* Размер цифр для узких экранов */
+    font-size: 1.65rem;
     font-weight: 800;
     margin-top: 0.5rem;
     letter-spacing: -0.02em;
@@ -398,12 +415,12 @@ body {
     font-size: 0.85rem;
     color: var(--text-muted);
     line-height: 1.5;
-    text-align: center; /* Центрируем подпись на мобильных */
+    text-align: center;
 }
 
 @media (min-width: 480px) {
     .author-credits {
-        text-align: left; /* Выравнивание по левому краю на больших экранах */
+        text-align: left;
     }
 }
 
@@ -501,23 +518,5 @@ body {
 @media (min-width: 640px) {
     #popupText {
         font-size: 0.95rem;
-    }
-}
-
-/* Фиксация адаптивного компактного отступа списка на дескриптах */
-@media (min-width: 640px) {
-    .calc-descriptor ul {
-        margin-left: 1.1rem;
-    }
-}
-
-/* Управление переносом строки в h1 для комфортного отображения */
-.laptop-break {
-    display: none; /* По умолчанию перенос скрыт (на мобильных и очень больших экранах) */
-}
-
-@media (min-width: 640px) and (max-width: 1024px) {
-    .laptop-break {
-        display: block; /* Включаем перенос на экранах планшетов и стандартных ноутбуков */
     }
 }
