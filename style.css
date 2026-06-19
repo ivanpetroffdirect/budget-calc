@@ -93,19 +93,16 @@ body {
     margin-bottom: 0.75rem;
 }
 
+/* Настройки компактного списка */
 .calc-descriptor ul {
-    margin-left: 1.25rem;
-    margin-bottom: 0.75rem;
-}
-
-@media (min-width: 640px) {
-    .calc-descriptor ul {
-        margin-left: 1.5rem;
-    }
+    margin-left: 1.1rem;      /* Уменьшенный отступ слева для маркеров */
+    margin-top: 0.25rem;     /* Прижали список ближе к вводному тексту */
+    margin-bottom: 0.5rem;   /* Уменьшенный отступ снизу */
+    padding-left: 0;         /* Обнуление внутреннего паддинга */
 }
 
 .calc-descriptor li {
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.2rem;   /* Плотное расположение строк списка */
 }
 
 .descriptor-note {
@@ -204,7 +201,7 @@ body {
 .form-group input,
 .form-group select {
     width: 100% !important;
-    height: 42px; /* Чуть компактнее высота элементов на смартфонах */
+    height: 42px; /* Компактная высота элементов на смартфонах */
     padding: 0.6rem 0.8rem;
     font-family: inherit;
     font-size: 0.95rem;
@@ -356,7 +353,7 @@ body {
 }
 
 .result-card-value {
-    font-size: 1.65rem; /* Аккуратный размер цифр для узких экранов */
+    font-size: 1.65rem; /* Размер цифр для узких экранов */
     font-weight: 800;
     margin-top: 0.5rem;
     letter-spacing: -0.02em;
@@ -406,7 +403,7 @@ body {
 
 @media (min-width: 480px) {
     .author-credits {
-        text-align: left; /* Возвращаем выравнивание по левому краю для больших экранов */
+        text-align: left; /* Выравнивание по левому краю на больших экранах */
     }
 }
 
@@ -504,5 +501,12 @@ body {
 @media (min-width: 640px) {
     #popupText {
         font-size: 0.95rem;
+    }
+}
+
+/* Фиксация адаптивного компактного отступа списка на дескриптах */
+@media (min-width: 640px) {
+    .calc-descriptor ul {
+        margin-left: 1.1rem;
     }
 }
