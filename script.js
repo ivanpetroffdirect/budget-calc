@@ -150,16 +150,26 @@ document.addEventListener('DOMContentLoaded', () => {
             availableNewBudgetRemainder = newBudget;
             weekHintText = "Суммарный лимит, который кампания технически может освоить за текущую календарную неделю (Фактический расход до рестарта + 100% нового бюджета).";
         } else {
+            // Теоретический расчет остатка по формуле для CPC
             const fullDaysComponent = (newBudget / 7) * (daysFromRestart - 1);
             const restartDayComponent = newBudget * 0.35;
-            availableNewBudgetRemainder = fullDaysComponent + restartDayComponent;
-            weekHintText = `Суммарный лимит за текущую календарную неделю для CPC. Складывается из: Фактического расхода до рестарта + 35% от нового бюджета (в день правок) + среднесуточного лимита (новый бюджет / 7) за оставшиеся полные дни до конца недели (их осталось: ${daysFromRestart - 1}).`;
+            const rawRemainder = fullDaysComponent + restartDayComponent;
+
+            // Применение лимита: остаток не может превышать 100% нового недельного бюджета
+            availableNewBudgetRemainder = Math.min(rawRemainder, newBudget);
+
+            // Текст подсказки меняется в зависимости от того, сработало ли ограничение в 100% бюджета
+            if (rawRemainder > newBudget) {
+                weekHintText = `Суммарный лимит за текущую календарную неделю для CPC. По формуле остаток бюджета до конца недели (${formatNumber(Math.round(rawRemainder))} ₽) превысил новый недельный лимит, поэтому алгоритм ограничен ровно до 100% нового бюджета (${formatNumber(newBudget)} ₽). Итог: Фактический расход до рестарта + новый бюджет целиком.`;
+            } else {
+                weekHintText = `Суммарный лимит за текущую календарную неделю для CPC. Складывается из: Фактического расхода до рестарта + 35% от нового бюджета (в день правок) + среднесуточного лимита (новый бюджет / 7) за оставшиеся полные дни до конца недели (их осталось: ${daysFromRestart - 1}).`;
+            }
         }
 
         // Запись динамической подсказки в первую карточку результатов
         totalWeekHint.setAttribute('data-hint', weekHintText);
 
-        // Итоговые расчеты математики
+        // Итоговые расчеты прогнозов
         const totalWeekForecast = expensesBefore + availableNewBudgetRemainder;
 
         const dayOldComponent = oldBudget * oldCoeff;
