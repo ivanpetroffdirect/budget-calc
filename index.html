@@ -2,13 +2,11 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Калькулятор недельного бюджета в Яндекс Директе</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <script src="script.js"></script>
-</body>
-</html>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <div class="restart-container">
     <header class="calc-header">
@@ -157,6 +155,12 @@
         </div>
     </div>
 
+    <footer class="author-credits" style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color, #e2e8f0); font-size: 0.9rem; color: var(--text-muted, #64748b); line-height: 1.5;">
+        Разработано экспертом по платному трафику Никитой Кравченко.<br>
+        Подписывайтесь на Telegram-канал Никиты по ссылке: 
+        <a href="https://t.me/budni_evangelista" target="_blank" rel="noopener" style="color: var(--accent-color, #3498db); text-decoration: none; font-weight: 600;">@budni_evangelista</a>
+    </footer>
+
     <div id="hintPopup" class="popup-overlay" onclick="closeHintPopup(event)">
         <div class="popup-content" onclick="event.stopPropagation()">
             <span class="popup-close" onclick="closeHintPopup(event)">&times;</span>
@@ -164,3 +168,7 @@
         </div>
     </div>
 </div>
+
+<script src="script.js"></script>
+</body>
+</html>
