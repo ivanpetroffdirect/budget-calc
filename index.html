@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калькулятор недельного бюджета в Яндекс Директе</title>
+    <title>Калькулятор недельного бюджета in Яндекс Директе</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
                     <li>изменение модели оплаты;</li>
                     <li>перенос даты начала кампании в будущее.</li>
                 </ul>
-                <p class="descriptor-note">Чтобы избежать перерасхода за неделю, изменяйте бюджет в начале calendarной недели. Подробнее в <a href="https://yandex.ru/support/direct/ru/strategies/week-budget#kak-rabotaet" target="_blank">Справке</a>.</p>
+                <p class="descriptor-note">Чтобы избежать перерасхода за неделю, изменяйте бюджет в начале календарной недели. Подробнее в <a href="https://yandex.ru/support/direct/ru/strategies/week-budget#kak-rabotaet" target="_blank">Справке</a>.</p>
             </div>
         </header>
 
@@ -29,7 +29,7 @@
             <div class="main-change-type-group">
                 <div class="form-group">
                     <label>
-                        Какое изменение планируете внесить?
+                        Какое изменение планируете внести?
                         <span class="hint-trigger" data-hint="Выберите характер планируемых правок в кампании. Это автоматически заблокирует параметры, которые не должны меняться при данном сценарии.">?</span>
                     </label>
                     <select id="changeTypeSelect">
@@ -122,15 +122,11 @@
                 <div class="result-card-box">
                     <div class="result-card-label" id="dynamicDayTitle">
                         Сколько кампания может потратить в четверг 
-                        <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>
+                        <span class="hint-trigger" data-hint="">?</span>
                     </div>
                     <div id="outMaxDayRiskCombo" class="result-card-value success">0 ₽</div>
                 </div>
             </div>
-
-            <p class="alert-text" id="restartNotice">
-                * При изменении бюджета максимальный расход в день составляет 35% от старого и нового бюджетов соответственно.
-            </p>
         </div>
 
         <footer class="author-credits">
