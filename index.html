@@ -20,7 +20,7 @@
                     <li>изменение модели оплаты;</li>
                     <li>перенос даты начала кампании в будущее.</li>
                 </ul>
-                <p class="descriptor-note">Чтобы избежать перерасхода за неделю, изменяйте бюджет в начале календарной недели. Подробнее в <a href="https://yandex.ru/support/direct/ru/strategies/week-budget#kak-rabotaet" target="_blank">Справке</a>.</p>
+                <p class="descriptor-note">Чтобы избежать перерасхода за неделю, изменяйте бюджет в начале calendarной недели. Подробнее в <a href="https://yandex.ru/support/direct/ru/strategies/week-budget#kak-rabotaet" target="_blank">Справке</a>.</p>
             </div>
         </header>
 
@@ -29,7 +29,7 @@
             <div class="main-change-type-group">
                 <div class="form-group">
                     <label>
-                        Какое изменение планируете внести?
+                        Какое изменение планируете внесить?
                         <span class="hint-trigger" data-hint="Выберите характер планируемых правок в кампании. Это автоматически заблокирует параметры, которые не должны меняться при данном сценарии.">?</span>
                     </label>
                     <select id="changeTypeSelect">
@@ -111,20 +111,22 @@
             </div>
             
             <div class="restart-results-grid">
-    <div class="result-card-box">
-        <div class="result-card-label">
-            Сколько кампания может потратить за неделю <span class="hint-trigger" data-hint="Суммарный лимит, который кампания технически может освоить за текущую календарную неделю (Фактический расход до рестарта + 100% нового бюджета).">?</span>
-        </div>
-        <div id="outTotalWeekForecast" class="result-card-value success">0 ₽</div>
-    </div>
+                <div class="result-card-box">
+                    <div class="result-card-label">
+                        Сколько кампания может потратить за неделю 
+                        <span class="hint-trigger" id="totalWeekHint" data-hint="">?</span>
+                    </div>
+                    <div id="outTotalWeekForecast" class="result-card-value success">0 ₽</div>
+                </div>
 
-    <div class="result-card-box">
-        <div class="result-card-label" id="dynamicDayTitle">
-            Сколько кампания может потратить в четверг <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>
-        </div>
-        <div id="outMaxDayRiskCombo" class="result-card-value success">0 ₽</div>
-    </div>
-</div>
+                <div class="result-card-box">
+                    <div class="result-card-label" id="dynamicDayTitle">
+                        Сколько кампания может потратить в четверг 
+                        <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>
+                    </div>
+                    <div id="outMaxDayRiskCombo" class="result-card-value success">0 ₽</div>
+                </div>
+            </div>
 
             <p class="alert-text" id="restartNotice">
                 * При изменении бюджета максимальный расход в день составляет 35% от старого и нового бюджетов соответственно.
