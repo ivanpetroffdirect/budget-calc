@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const outTotalWeekForecast = document.getElementById('outTotalWeekForecast');
     const outMaxDayRiskCombo = document.getElementById('outMaxDayRiskCombo');
+    const totalWeekHint = document.getElementById('totalWeekHint');
 
     const popupOverlay = document.getElementById('hintPopup');
     const popupText = document.getElementById('popupText');
@@ -126,43 +127,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const oldBudget = parseNumber(oldBudgetInput.value);
         const newBudget = parseNumber(newBudgetInput.value);
 
-        // Обновляем динамические тексты в инпутах и заголовках карточек (с сохранением вашего нового формата)
+        // Динамическое обновление подписей дней недели
         dynamicExpensesLabel.innerHTML = `Расход с понедельника по ${daysWordMap[dayIdx]} <span class="hint-trigger" data-hint="Реальный или планируемый расход текущей кампании на этой неделе до момента нажатия кнопки «Сохранить».">?</span>`;
         dynamicDayTitle.innerHTML = `Сколько кампания может потратить ${daysTargetMap[dayIdx]} <span class="hint-trigger" data-hint="Теоретический пиковый сценарий расхода бюджета в день внесения правок из-за наложения суточных лимитов старой и новой конфигураций стратегий.">?</span>`;
 
-        // Коэффициенты для расчета максимального расхода в день рестарта
         const oldCoeff = oldModel === 'clicks' ? 0.35 : 1.0;
         const newCoeff = newModel === 'clicks' ? 0.35 : 1.0;
 
         restartNotice.textContent = `* При текущем выборе максимальный расход в день рестарта складывается из суточных овердрафтов: ${(oldCoeff*100)}% от старого бюджета + ${(newCoeff*100)}% от нового бюджета.`;
 
-        // --- ВЫЧИСЛЕНИЕ КОЛИЧЕСТВА ДНЕЙ СО ДНЯ РЕСТАРТА ---
-        // Понедельник(1) -> 7 дней, ..., Воскресенье(7) -> 1 день
+        // Количество дней со дня рестарта (Пн = 7 дней, ..., Вс = 1 день)
         const daysFromRestart = 8 - dayIdx; 
 
-        // --- РАСЧЕТ ОСТАТКА НОВОГО БЮДЖЕТА ---
         let availableNewBudgetRemainder = 0;
+        let weekHintText = "";
 
+        // Расчет остатка по условию модели
         if (newModel === 'conversions') {
-            // Если новая модель CPA — доступно 100% нового бюджета
             availableNewBudgetRemainder = newBudget;
+            weekHintText = "Суммарный лимит, который кампания может освоить за текущую календарную неделю (Фактический расход до рестарта + 100% нового бюджета).";
         } else {
-            // Если новая модель CPC — считаем по вашей формуле:
-            // (Новый бюджет / 7) * (Количество дней - 1) + Новый бюджет * 35%
             const fullDaysComponent = (newBudget / 7) * (daysFromRestart - 1);
             const restartDayComponent = newBudget * 0.35;
             availableNewBudgetRemainder = fullDaysComponent + restartDayComponent;
+            weekHintText = `Суммарный лимит, который кампания может освоить за текущую календарную неделю. Складывается из: Фактического расхода до рестарта + 35% от нового бюджета (в день правок) + среднесуточного лимита (новый бюджет / 7) за оставшиеся полные дни до конца недели (их осталось: ${daysFromRestart - 1}).`;
         }
 
-        // Итоговый прогноз за неделю: Фактический расход до рестарта + рассчитанный остаток
+        // Запись кастомной подсказки
+        totalWeekHint.setAttribute('data-hint', weekHintText);
+
         const totalWeekForecast = expensesBefore + availableNewBudgetRemainder;
 
-        // Расчет максимального расхода в день рестарта (остался прежним)
         const dayOldComponent = oldBudget * oldCoeff;
         const dayNewComponent = newBudget * newCoeff;
         const maxDayRiskCombo = dayOldComponent + dayNewComponent;
 
-        // Вывод результатов на экран
         outTotalWeekForecast.textContent = `${formatNumber(Math.round(totalWeekForecast))} ₽`;
         outMaxDayRiskCombo.textContent = `${formatNumber(Math.round(maxDayRiskCombo))} ₽`;
     }
