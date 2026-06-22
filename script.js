@@ -192,9 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Итоговый прогноз за неделю
         const totalWeekForecast = expensesBefore + availableNewBudgetRemainder;
 
-        // Вывод результатов на экран
-        outTotalWeekForecast.textContent = `${formatNumber(Math.round(totalWeekForecast))} ₽`;
-        outMaxDayRiskCombo.textContent = `${formatNumber(Math.round(maxDayRiskCombo))} ₽`;
+        // Вывод результатов на экран с предлогом «до»
+        outTotalWeekForecast.textContent = `до ${formatNumber(Math.round(totalWeekForecast))} ₽`;
+        outMaxDayRiskCombo.textContent = `до ${formatNumber(Math.round(maxDayRiskCombo))} ₽`;
     }
 
     [oldModelSelect, newModelSelect, restartDaySelect].forEach(select => {
